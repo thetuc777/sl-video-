@@ -84,6 +84,20 @@
     margin-bottom: 1.2rem;
   }
 
+  .hint-box {
+    background: rgba(124,92,252,0.08);
+    border: 1px solid rgba(124,92,252,0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+
+  .hint-box strong { color: var(--accent); }
+
   label {
     display: block;
     font-size: 13px;
@@ -99,14 +113,12 @@
     padding: 12px 16px;
     color: var(--text);
     font-family: 'Space Mono', monospace;
-    font-size: 13px;
+    font-size: 12px;
     outline: none;
     transition: border-color 0.2s;
   }
 
-  input[type="text"]:focus {
-    border-color: var(--accent);
-  }
+  input[type="text"]:focus { border-color: var(--accent); }
 
   .options-grid {
     display: grid;
@@ -143,17 +155,8 @@
     font-size: 16px;
   }
 
-  .opt-label {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .opt-desc {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+  .opt-label { font-size: 13px; font-weight: 700; color: var(--text); }
+  .opt-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
   .check {
     margin-left: auto;
@@ -244,8 +247,9 @@
     margin-top: 1rem;
     font-size: 12px;
     color: var(--muted);
-    line-height: 1.7;
+    line-height: 1.8;
     font-family: 'Space Mono', monospace;
+    white-space: pre-line;
   }
 </style>
 </head>
@@ -256,9 +260,15 @@
 <p class="sub">Génère ton lien vidéo pour Second Life en quelques clics</p>
 
 <div class="card">
-  <p class="card-title">01 — Lien Google Drive</p>
-  <label>Colle ton lien de partage Google Drive</label>
-  <input type="text" id="driveUrl" placeholder="https://drive.google.com/file/d/XXXX/view?usp=sharing" value="https://drive.google.com/file/d/1ybKDRwvtH7dk3GjUispIgoY0tVeHzCd3/view?usp=sharing" />
+  <p class="card-title">01 — Lien Dropbox</p>
+  <div class="hint-box">
+    <strong>Comment obtenir ton lien Dropbox :</strong><br>
+    1. Upload ta vidéo sur dropbox.com<br>
+    2. Clique "..." → Share → Copy link<br>
+    3. Colle le lien ci-dessous
+  </div>
+  <label>Lien de partage Dropbox</label>
+  <input type="text" id="dropboxUrl" placeholder="https://www.dropbox.com/s/XXXX/mavideo.mp4?dl=0" />
 </div>
 
 <div class="card">
@@ -267,37 +277,25 @@
     <div class="opt active" onclick="toggle(this, 'autoplay')">
       <input type="checkbox" id="autoplay" checked>
       <div class="opt-icon">▶</div>
-      <div>
-        <div class="opt-label">Autoplay</div>
-        <div class="opt-desc">Lecture auto</div>
-      </div>
+      <div><div class="opt-label">Autoplay</div><div class="opt-desc">Lecture auto</div></div>
       <div class="check">✓</div>
     </div>
     <div class="opt active" onclick="toggle(this, 'loop')">
       <input type="checkbox" id="loop" checked>
       <div class="opt-icon">↺</div>
-      <div>
-        <div class="opt-label">Loop</div>
-        <div class="opt-desc">Répétition</div>
-      </div>
+      <div><div class="opt-label">Loop</div><div class="opt-desc">Répétition</div></div>
       <div class="check">✓</div>
     </div>
     <div class="opt active" onclick="toggle(this, 'mute')">
       <input type="checkbox" id="mute" checked>
       <div class="opt-icon">🔇</div>
-      <div>
-        <div class="opt-label">Mute</div>
-        <div class="opt-desc">Sans son</div>
-      </div>
+      <div><div class="opt-label">Mute</div><div class="opt-desc">Sans son</div></div>
       <div class="check">✓</div>
     </div>
     <div class="opt" onclick="toggle(this, 'controls')">
       <input type="checkbox" id="controls">
       <div class="opt-icon">⬛</div>
-      <div>
-        <div class="opt-label">Barre nav</div>
-        <div class="opt-desc">Afficher</div>
-      </div>
+      <div><div class="opt-label">Barre nav</div><div class="opt-desc">Afficher</div></div>
       <div class="check"></div>
     </div>
   </div>
@@ -322,17 +320,11 @@ function toggle(el, id) {
   el.querySelector('.check').textContent = cb.checked ? '✓' : '';
 }
 
-function extractDriveId(url) {
-  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  return m ? m[1] : null;
-}
-
 function generate() {
-  const url = document.getElementById('driveUrl').value.trim();
-  const id = extractDriveId(url);
+  const url = document.getElementById('dropboxUrl').value.trim();
 
-  if (!id) {
-    alert('Lien Google Drive invalide. Assure-toi de copier le lien complet de partage.');
+  if (!url.includes('dropbox.com')) {
+    alert('Lien Dropbox invalide. Assure-toi de copier le lien de partage Dropbox.');
     return;
   }
 
@@ -342,18 +334,18 @@ function generate() {
   const controls = document.getElementById('controls').checked;
 
   const params = new URLSearchParams();
-  params.set('id', id);
+  params.set('url', url);
   if (autoplay) params.set('autoplay', '1');
   if (loop) params.set('loop', '1');
   if (mute) params.set('mute', '1');
   if (controls) params.set('controls', '1');
 
-  const baseUrl = window.location.href.replace('index.html', '').replace(/\/$/, '');
+  const baseUrl = window.location.href.replace('index.html', '').replace(/\/+$/, '');
   const finalUrl = baseUrl + '/player.html?' + params.toString();
 
   document.getElementById('urlDisplay').textContent = finalUrl;
   document.getElementById('hint').textContent =
-    '→ Colle cette URL dans Media > Video URI dans Second Life\n→ Chaque vidéo = colle un nouveau lien Drive et génère une nouvelle URL';
+    '→ Colle cette URL dans Media > Video URI dans Second Life\n→ Pour une nouvelle vidéo : colle un nouveau lien Dropbox et génère une nouvelle URL';
   document.getElementById('result').style.display = 'block';
   document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
 }
