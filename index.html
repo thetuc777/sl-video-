@@ -9,8 +9,9 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:wght@300;400&display=swap');
 
-:root {
+:root{
   --bg:#080808;
+  --card:#111;
   --text:#f5f3ed;
   --muted:#8a867a;
   --accent:#c8c0a8;
@@ -32,126 +33,244 @@ body{
 /* TITLE */
 h1{
   font-family:'Cinzel',serif;
-  font-size:2.2rem;
+  font-size:2.3rem;
   letter-spacing:4px;
-  margin-bottom:10px;
+  margin-bottom:5px;
 }
 
 .by{
   font-size:0.5em;
   color:var(--accent);
-  letter-spacing:2px;
+}
+
+/* SUB */
+.sub{
+  color:var(--muted);
+  margin-bottom:30px;
+  font-style:italic;
 }
 
 /* INPUT */
 input{
   width:100%;
-  max-width:500px;
-  padding:12px;
-  margin-bottom:25px;
-  background:none;
+  max-width:520px;
+  padding:14px;
+  margin-bottom:30px;
+  background:transparent;
   border:none;
   border-bottom:1px solid var(--border);
   color:var(--text);
+  font-size:15px;
 }
 
-/* OPTIONS */
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
-  max-width:500px;
+  gap:12px;
+  max-width:520px;
   width:100%;
 }
 
+/* OPTION CARD */
 .opt{
   border:1px solid var(--border);
-  padding:12px;
+  padding:14px;
   cursor:pointer;
-  text-align:center;
+  transition:0.2s;
+  background:var(--card);
+}
+
+.opt:hover{
+  border-color:var(--accent);
 }
 
 .opt.active{
   border-color:var(--accent);
-  background:rgba(200,192,168,0.05);
+  background:rgba(200,192,168,0.06);
+}
+
+/* TITLE */
+.opt-title{
+  font-family:'Cinzel',serif;
+  font-size:12px;
+  letter-spacing:2px;
+}
+
+/* DESC */
+.opt-desc{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:5px;
+  line-height:1.4;
 }
 
 /* BUTTON */
 button{
-  margin-top:20px;
-  padding:15px;
+  margin-top:25px;
+  padding:16px;
   width:100%;
-  max-width:500px;
+  max-width:520px;
   background:none;
   border:1px solid var(--accent);
   color:var(--accent);
   cursor:pointer;
+  font-family:'Cinzel',serif;
+  letter-spacing:3px;
+  transition:0.2s;
+}
+
+button:hover{
+  background:var(--accent);
+  color:#000;
 }
 
 /* RESULT */
 .result{
   margin-top:30px;
-  max-width:500px;
+  max-width:520px;
+  width:100%;
+  display:none;
+}
+
+.url{
+  border-bottom:1px solid var(--border);
+  padding-bottom:15px;
+  margin-bottom:15px;
   word-break:break-all;
+  color:var(--accent);
+}
+
+/* COPY BTN */
+.copy{
+  padding:10px 20px;
+  border:1px solid var(--border);
+  cursor:pointer;
+  display:inline-block;
+  font-size:12px;
+  letter-spacing:2px;
+}
+
+.copy:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+.msg{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
 }
 </style>
 </head>
 
 <body>
 
-<h1>SL Video <span class="by">— by Øzak</span></h1>
+<h1>SL Video <span class="by">— Øzak</span></h1>
+<div class="sub">Générateur de lecteur vidéo pour Second Life</div>
 
-<input id="url" placeholder="Lien Dropbox...">
+<input id="url" placeholder="Colle ton lien Dropbox ici">
 
 <div class="grid">
 
-<div class="opt active" onclick="t(this,'autoplay')">Autoplay</div>
-<div class="opt active" onclick="t(this,'loop')">Loop</div>
-<div class="opt active" onclick="t(this,'mute')">Mute</div>
-<div class="opt" onclick="t(this,'controls')">Controls</div>
+<div class="opt active" onclick="t(this,'autoplay')">
+<div class="opt-title">Autoplay</div>
+<div class="opt-desc">La vidéo démarre automatiquement</div>
+</div>
 
-<div class="opt active" onclick="t(this,'responsive')">Responsive</div>
-<div class="opt" onclick="t(this,'hideAudio')">Hide Audio</div>
+<div class="opt active" onclick="t(this,'loop')">
+<div class="opt-title">Loop</div>
+<div class="opt-desc">Lecture en boucle infinie</div>
+</div>
 
-<div class="opt" onclick="t(this,'cover')">Fit Cover</div>
+<div class="opt active" onclick="t(this,'mute')">
+<div class="opt-title">Mute</div>
+<div class="opt-desc">Démarre sans son (recommandé)</div>
+</div>
+
+<div class="opt" onclick="t(this,'controls')">
+<div class="opt-title">Controls</div>
+<div class="opt-desc">Affiche les boutons vidéo</div>
+</div>
+
+<div class="opt active" onclick="t(this,'responsive')">
+<div class="opt-title">Responsive</div>
+<div class="opt-desc">S’adapte à la taille de l’écran</div>
+</div>
+
+<div class="opt" onclick="t(this,'hideAudio')">
+<div class="opt-title">Hide Audio</div>
+<div class="opt-desc">Masque les contrôles audio</div>
+</div>
+
+<div class="opt" onclick="t(this,'cover')">
+<div class="opt-title">Fit Cover</div>
+<div class="opt-desc">Remplit l’écran (peut crop)</div>
+</div>
+
+<div class="opt active" onclick="t(this,'contain')">
+<div class="opt-title">Fit Contain</div>
+<div class="opt-desc">Garde les proportions</div>
+</div>
 
 </div>
 
-<button onclick="gen()">Générer</button>
+<button onclick="gen()">GÉNÉRER LE LIEN</button>
 
-<div class="result" id="out"></div>
+<div class="result" id="res">
+<div class="url" id="out"></div>
+<div class="copy" onclick="copy()">COPIER</div>
+<div class="msg" id="msg"></div>
+</div>
 
 <script>
 let state={
-  autoplay:true,
-  loop:true,
-  mute:true,
-  controls:false,
-  responsive:true,
-  hideAudio:false,
-  cover:false
+autoplay:true,
+loop:true,
+mute:true,
+controls:false,
+responsive:true,
+hideAudio:false,
+cover:false,
+contain:true
 };
 
 function t(el,key){
-  state[key]=!state[key];
-  el.classList.toggle("active");
+
+if(key==="cover"){state.cover=true;state.contain=false;}
+if(key==="contain"){state.cover=false;state.contain=true;}
+
+if(key!=="cover" && key!=="contain"){
+state[key]=!state[key];
+}
+
+el.classList.toggle("active");
 }
 
 function gen(){
 
-  const url=document.getElementById("url").value;
+const url=document.getElementById("url").value;
 
-  let p=new URLSearchParams();
-  p.set("url",url);
+let p=new URLSearchParams();
+p.set("url",url);
 
-  for(let k in state){
-    if(state[k]) p.set(k,"1");
-  }
+for(let k in state){
+if(state[k]) p.set(k,"1");
+}
 
-  let base=location.href.replace("index.html","");
-  let final=base+"player.html?"+p.toString();
+let base=location.href.replace("index.html","");
+let final=base+"player.html?"+p.toString();
 
-  document.getElementById("out").innerText=final;
+document.getElementById("out").innerText=final;
+document.getElementById("res").style.display="block";
+}
+
+function copy(){
+let txt=document.getElementById("out").innerText;
+
+navigator.clipboard.writeText(txt);
+
+document.getElementById("msg").innerText="✔ Lien copié";
 }
 </script>
 
