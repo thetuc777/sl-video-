@@ -4,74 +4,89 @@
 <meta charset="utf-8">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-html,body{
-  width:100%;
-  height:100%;
-  background:#000;
-  overflow:hidden;
-}
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-video{
-  width:100%;
-  height:100%;
-  display:block;
-}
+  video {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* 🔥 FIX → plus de déformation */
+    background: #000;
+  }
 
-/* MODES */
-.contain{object-fit:contain;}
-.cover{object-fit:cover;}
+  /* Mode plein écran forcé (option responsive OFF) */
+  .fill video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 </style>
-</head>
 
+</head>
 <body>
 
 <script>
-const p=new URLSearchParams(location.search);
+const p = new URLSearchParams(window.location.search);
 
-let url=p.get("url");
+const url = p.get('url');
+const autoplay = p.get('autoplay') === '1';
+const loop = p.get('loop') === '1';
+const mute = p.get('mute') === '1';
+const controls = p.get('controls') === '1';
+const responsive = p.get('responsive') !== '0'; // ON par défaut
 
-let direct=url
-.replace("www.dropbox.com","dl.dropboxusercontent.com")
-.replace("?dl=0","");
-
-if(!direct.includes("dl=1")){
-  direct+=(direct.includes("?")?"&":"?")+"dl=1";
+if (!responsive) {
+  document.body.classList.add("fill");
 }
 
-const v=document.createElement("video");
+if (url) {
 
-v.src=direct;
+  // 🔥 Conversion Dropbox propre
+  let directUrl = url
+    .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
+    .replace('?dl=0', '')
+    .replace('&dl=0', '')
+    .replace('?dl=1', '')
+    .replace('&dl=1', '');
 
-v.autoplay=p.get("autoplay")==="1";
-v.loop=p.get("loop")==="1";
-v.muted=p.get("mute")==="1";
-v.controls=p.get("controls")==="1";
+  const video = document.createElement('video');
 
-v.playsInline=true;
-v.preload="metadata";
+  video.src = directUrl;
 
-/* autoplay fix */
-if(v.autoplay){
-  v.muted=true;
-  v.play().catch(()=>{});
+  if (autoplay) video.autoplay = true;
+  if (loop) video.loop = true;
+  if (mute) video.muted = true;
+
+  if (controls) {
+    video.controls = true;
+  } else {
+    video.controls = false;
+  }
+
+  video.playsInline = true;
+
+  // 🔥 Important pour autoplay navigateur
+  if (autoplay && !mute) {
+    video.muted = true;
+  }
+
+  document.body.appendChild(video);
 }
-
-/* FIT */
-if(p.get("cover")==="1"){
-  v.classList.add("cover");
-}else{
-  v.classList.add("contain");
-}
-
-/* RESPONSIVE OFF */
-if(p.get("responsive")!=="1"){
-  v.style.width="auto";
-  v.style.height="auto";
-}
-
-document.body.appendChild(v);
 </script>
 
 </body>
