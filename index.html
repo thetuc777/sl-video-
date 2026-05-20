@@ -34,19 +34,12 @@ body{
 h1{
   font-family:'Cinzel',serif;
   font-size:2.3rem;
-  letter-spacing:4px;
-  margin-bottom:5px;
 }
+.by{font-size:0.5em;color:var(--accent);}
 
-.by{
-  font-size:0.5em;
-  color:var(--accent);
-}
-
-/* SUB */
 .sub{
   color:var(--muted);
-  margin-bottom:30px;
+  margin-bottom:25px;
   font-style:italic;
 }
 
@@ -55,12 +48,31 @@ input{
   width:100%;
   max-width:520px;
   padding:14px;
-  margin-bottom:30px;
+  margin-bottom:20px;
   background:transparent;
   border:none;
   border-bottom:1px solid var(--border);
   color:var(--text);
-  font-size:15px;
+}
+
+/* PREVIEW */
+.preview{
+  width:100%;
+  max-width:520px;
+  height:260px;
+  border:1px solid var(--border);
+  margin-bottom:25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+  position:relative;
+}
+
+.preview video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
 }
 
 /* GRID */
@@ -72,37 +84,27 @@ input{
   width:100%;
 }
 
-/* OPTION CARD */
 .opt{
   border:1px solid var(--border);
   padding:14px;
   cursor:pointer;
-  transition:0.2s;
   background:var(--card);
-}
-
-.opt:hover{
-  border-color:var(--accent);
 }
 
 .opt.active{
   border-color:var(--accent);
-  background:rgba(200,192,168,0.06);
 }
 
-/* TITLE */
+/* TEXT */
 .opt-title{
   font-family:'Cinzel',serif;
   font-size:12px;
-  letter-spacing:2px;
 }
 
-/* DESC */
 .opt-desc{
   font-size:12px;
   color:var(--muted);
   margin-top:5px;
-  line-height:1.4;
 }
 
 /* BUTTON */
@@ -111,116 +113,88 @@ button{
   padding:16px;
   width:100%;
   max-width:520px;
-  background:none;
   border:1px solid var(--accent);
+  background:none;
   color:var(--accent);
   cursor:pointer;
-  font-family:'Cinzel',serif;
-  letter-spacing:3px;
-  transition:0.2s;
-}
-
-button:hover{
-  background:var(--accent);
-  color:#000;
 }
 
 /* RESULT */
 .result{
-  margin-top:30px;
+  margin-top:25px;
   max-width:520px;
-  width:100%;
   display:none;
 }
 
 .url{
-  border-bottom:1px solid var(--border);
-  padding-bottom:15px;
-  margin-bottom:15px;
+  color:var(--accent);
   word-break:break-all;
-  color:var(--accent);
+  margin-bottom:10px;
 }
 
-/* COPY BTN */
 .copy{
-  padding:10px 20px;
-  border:1px solid var(--border);
   cursor:pointer;
-  display:inline-block;
   font-size:12px;
-  letter-spacing:2px;
 }
 
-.copy:hover{
-  border-color:var(--accent);
-  color:var(--accent);
-}
-
-.msg{
-  margin-top:10px;
-  font-size:12px;
-  color:var(--muted);
-}
 </style>
 </head>
 
 <body>
 
 <h1>SL Video <span class="by">— Øzak</span></h1>
-<div class="sub">Générateur de lecteur vidéo pour Second Life</div>
+<div class="sub">Preview en temps réel avant génération</div>
 
-<input id="url" placeholder="Colle ton lien Dropbox ici">
+<input id="url" placeholder="Colle ton lien Dropbox ici" oninput="preview()">
+
+<div class="preview" id="previewBox">
+<span style="color:#555">Aperçu vidéo</span>
+</div>
 
 <div class="grid">
 
 <div class="opt active" onclick="t(this,'autoplay')">
 <div class="opt-title">Autoplay</div>
-<div class="opt-desc">La vidéo démarre automatiquement</div>
+<div class="opt-desc">Lecture automatique</div>
 </div>
 
 <div class="opt active" onclick="t(this,'loop')">
 <div class="opt-title">Loop</div>
-<div class="opt-desc">Lecture en boucle infinie</div>
+<div class="opt-desc">Boucle</div>
 </div>
 
 <div class="opt active" onclick="t(this,'mute')">
 <div class="opt-title">Mute</div>
-<div class="opt-desc">Démarre sans son (recommandé)</div>
+<div class="opt-desc">Sans son</div>
 </div>
 
 <div class="opt" onclick="t(this,'controls')">
 <div class="opt-title">Controls</div>
-<div class="opt-desc">Affiche les boutons vidéo</div>
+<div class="opt-desc">Afficher UI vidéo</div>
 </div>
 
 <div class="opt active" onclick="t(this,'responsive')">
 <div class="opt-title">Responsive</div>
-<div class="opt-desc">S’adapte à la taille de l’écran</div>
-</div>
-
-<div class="opt" onclick="t(this,'hideAudio')">
-<div class="opt-title">Hide Audio</div>
-<div class="opt-desc">Masque les contrôles audio</div>
+<div class="opt-desc">Adaptatif écran</div>
 </div>
 
 <div class="opt" onclick="t(this,'cover')">
 <div class="opt-title">Fit Cover</div>
-<div class="opt-desc">Remplit l’écran (peut crop)</div>
+<div class="opt-desc">Remplit écran</div>
 </div>
 
 <div class="opt active" onclick="t(this,'contain')">
 <div class="opt-title">Fit Contain</div>
-<div class="opt-desc">Garde les proportions</div>
+<div class="opt-desc">Respecte proportions</div>
 </div>
 
 </div>
 
-<button onclick="gen()">GÉNÉRER LE LIEN</button>
+<button onclick="gen()">GÉNÉRER</button>
 
 <div class="result" id="res">
 <div class="url" id="out"></div>
-<div class="copy" onclick="copy()">COPIER</div>
-<div class="msg" id="msg"></div>
+<div class="copy" onclick="copy()">📋 Copier</div>
 </div>
 
 <script>
@@ -230,27 +204,49 @@ loop:true,
 mute:true,
 controls:false,
 responsive:true,
-hideAudio:false,
 cover:false,
 contain:true
 };
 
 function t(el,key){
-
 if(key==="cover"){state.cover=true;state.contain=false;}
 if(key==="contain"){state.cover=false;state.contain=true;}
-
-if(key!=="cover" && key!=="contain"){
-state[key]=!state[key];
+else if(key!=="cover" && key!=="contain"){state[key]=!state[key];}
+el.classList.toggle("active");
+preview();
 }
 
-el.classList.toggle("active");
+function getDirect(url){
+return url
+.replace("www.dropbox.com","dl.dropboxusercontent.com")
+.replace("?dl=0","");
+}
+
+function preview(){
+
+const url=document.getElementById("url").value;
+if(!url.includes("dropbox")) return;
+
+let box=document.getElementById("previewBox");
+box.innerHTML="";
+
+let v=document.createElement("video");
+
+v.src=getDirect(url);
+v.muted=true;
+v.loop=true;
+v.autoplay=true;
+v.playsInline=true;
+
+v.style.objectFit = state.cover ? "cover" : "contain";
+
+v.play().catch(()=>{});
+
+box.appendChild(v);
 }
 
 function gen(){
-
 const url=document.getElementById("url").value;
-
 let p=new URLSearchParams();
 p.set("url",url);
 
@@ -258,19 +254,14 @@ for(let k in state){
 if(state[k]) p.set(k,"1");
 }
 
-let base=location.href.replace("index.html","");
-let final=base+"player.html?"+p.toString();
+let final=location.href.replace("index.html","")+"player.html?"+p.toString();
 
 document.getElementById("out").innerText=final;
 document.getElementById("res").style.display="block";
 }
 
 function copy(){
-let txt=document.getElementById("out").innerText;
-
-navigator.clipboard.writeText(txt);
-
-document.getElementById("msg").innerText="✔ Lien copié";
+navigator.clipboard.writeText(document.getElementById("out").innerText);
 }
 </script>
 
