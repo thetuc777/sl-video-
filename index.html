@@ -2,266 +2,143 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>SL Video Manager — Øzak</title>
+<title>Øzak Player Generator</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:wght@300;400&display=swap');
-
-:root{
-  --bg:#080808;
-  --card:#111;
-  --text:#f5f3ed;
-  --muted:#8a867a;
-  --accent:#c8c0a8;
-  --border:#2c2c2c;
+body {
+  font-family: Arial, sans-serif;
+  background: #0a0a0a;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Cormorant Garamond',serif;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:3rem 1rem;
+.container {
+  width: 420px;
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #000;
 }
 
-/* TITLE */
-h1{
-  font-family:'Cinzel',serif;
-  font-size:2.3rem;
-}
-.by{font-size:0.5em;color:var(--accent);}
-
-.sub{
-  color:var(--muted);
-  margin-bottom:25px;
-  font-style:italic;
+h1 {
+  text-align: center;
+  margin-bottom: 5px;
 }
 
-/* INPUT */
-input{
-  width:100%;
-  max-width:520px;
-  padding:14px;
-  margin-bottom:20px;
-  background:transparent;
-  border:none;
-  border-bottom:1px solid var(--border);
-  color:var(--text);
+.subtitle {
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.6;
+  margin-bottom: 20px;
 }
 
-/* PREVIEW */
-.preview{
-  width:100%;
-  max-width:520px;
-  height:260px;
-  border:1px solid var(--border);
-  margin-bottom:25px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#000;
-  position:relative;
+input, button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
 }
 
-.preview video{
-  width:100%;
-  height:100%;
-  object-fit:contain;
+input {
+  background: #222;
+  color: #fff;
 }
 
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  max-width:520px;
-  width:100%;
+button {
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-.opt{
-  border:1px solid var(--border);
-  padding:14px;
-  cursor:pointer;
-  background:var(--card);
+.options {
+  margin-top: 15px;
+  font-size: 13px;
 }
 
-.opt.active{
-  border-color:var(--accent);
+.options label {
+  display: block;
+  margin: 6px 0;
 }
 
-/* TEXT */
-.opt-title{
-  font-family:'Cinzel',serif;
-  font-size:12px;
+.desc {
+  font-size: 11px;
+  opacity: 0.5;
+  margin-left: 5px;
 }
 
-.opt-desc{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:5px;
+.preview {
+  margin-top: 15px;
+  width: 100%;
+  height: 200px;
+  background: #000;
 }
 
-/* BUTTON */
-button{
-  margin-top:25px;
-  padding:16px;
-  width:100%;
-  max-width:520px;
-  border:1px solid var(--accent);
-  background:none;
-  color:var(--accent);
-  cursor:pointer;
+.output {
+  margin-top: 10px;
+  font-size: 11px;
+  background: #000;
+  padding: 8px;
+  word-break: break-all;
 }
-
-/* RESULT */
-.result{
-  margin-top:25px;
-  max-width:520px;
-  display:none;
-}
-
-.url{
-  color:var(--accent);
-  word-break:break-all;
-  margin-bottom:10px;
-}
-
-.copy{
-  cursor:pointer;
-  font-size:12px;
-}
-
 </style>
 </head>
 
 <body>
 
-<h1>SL Video <span class="by">— Øzak</span></h1>
-<div class="sub">Preview en temps réel avant génération</div>
+<div class="container">
+<h1>Øzak Player</h1>
+<div class="subtitle">Generator • by Øzak</div>
 
-<input id="url" placeholder="Colle ton lien Dropbox ici" oninput="preview()">
+<input id="url" placeholder="Lien vidéo Dropbox ou direct">
 
-<div class="preview" id="previewBox">
-<span style="color:#555">Aperçu vidéo</span>
+<div class="options">
+<label><input type="checkbox" id="autoplay" checked> Autoplay <span class="desc">(démarre seul)</span></label>
+<label><input type="checkbox" id="loop"> Loop <span class="desc">(boucle)</span></label>
+<label><input type="checkbox" id="mute"> Muted <span class="desc">(sans son)</span></label>
+<label><input type="checkbox" id="controls"> Controls <span class="desc">(barre visible)</span></label>
+<label><input type="checkbox" id="responsive" checked> Responsive <span class="desc">(adaptatif)</span></label>
 </div>
 
-<div class="grid">
+<button onclick="preview()">🎬 Preview</button>
+<button onclick="generate()">⚡ Générer le lien</button>
+<button onclick="copy()">📋 Copier</button>
 
-<div class="opt active" onclick="t(this,'autoplay')">
-<div class="opt-title">Autoplay</div>
-<div class="opt-desc">Lecture automatique</div>
-</div>
+<iframe id="preview" class="preview"></iframe>
 
-<div class="opt active" onclick="t(this,'loop')">
-<div class="opt-title">Loop</div>
-<div class="opt-desc">Boucle</div>
-</div>
-
-<div class="opt active" onclick="t(this,'mute')">
-<div class="opt-title">Mute</div>
-<div class="opt-desc">Sans son</div>
-</div>
-
-<div class="opt" onclick="t(this,'controls')">
-<div class="opt-title">Controls</div>
-<div class="opt-desc">Afficher UI vidéo</div>
-</div>
-
-<div class="opt active" onclick="t(this,'responsive')">
-<div class="opt-title">Responsive</div>
-<div class="opt-desc">Adaptatif écran</div>
-</div>
-
-<div class="opt" onclick="t(this,'cover')">
-<div class="opt-title">Fit Cover</div>
-<div class="opt-desc">Remplit écran</div>
-</div>
-
-<div class="opt active" onclick="t(this,'contain')">
-<div class="opt-title">Fit Contain</div>
-<div class="opt-desc">Respecte proportions</div>
-</div>
-
-</div>
-
-<button onclick="gen()">GÉNÉRER</button>
-
-<div class="result" id="res">
-<div class="url" id="out"></div>
-<div class="copy" onclick="copy()">📋 Copier</div>
+<div id="output" class="output"></div>
 </div>
 
 <script>
-let state={
-autoplay:true,
-loop:true,
-mute:true,
-controls:false,
-responsive:true,
-cover:false,
-contain:true
-};
+function buildURL() {
+  const base = "player.html";
 
-function t(el,key){
-if(key==="cover"){state.cover=true;state.contain=false;}
-if(key==="contain"){state.cover=false;state.contain=true;}
-else if(key!=="cover" && key!=="contain"){state[key]=!state[key];}
-el.classList.toggle("active");
-preview();
+  const params = new URLSearchParams();
+  params.set("url", document.getElementById("url").value);
+  params.set("autoplay", autoplay.checked ? 1 : 0);
+  params.set("loop", loop.checked ? 1 : 0);
+  params.set("mute", mute.checked ? 1 : 0);
+  params.set("controls", controls.checked ? 1 : 0);
+  params.set("responsive", responsive.checked ? 1 : 0);
+
+  return base + "?" + params.toString();
 }
 
-function getDirect(url){
-return url
-.replace("www.dropbox.com","dl.dropboxusercontent.com")
-.replace("?dl=0","");
+function preview() {
+  document.getElementById("preview").src = buildURL();
 }
 
-function preview(){
-
-const url=document.getElementById("url").value;
-if(!url.includes("dropbox")) return;
-
-let box=document.getElementById("previewBox");
-box.innerHTML="";
-
-let v=document.createElement("video");
-
-v.src=getDirect(url);
-v.muted=true;
-v.loop=true;
-v.autoplay=true;
-v.playsInline=true;
-
-v.style.objectFit = state.cover ? "cover" : "contain";
-
-v.play().catch(()=>{});
-
-box.appendChild(v);
+function generate() {
+  const link = buildURL();
+  document.getElementById("output").innerText = link;
 }
 
-function gen(){
-const url=document.getElementById("url").value;
-let p=new URLSearchParams();
-p.set("url",url);
-
-for(let k in state){
-if(state[k]) p.set(k,"1");
-}
-
-let final=location.href.replace("index.html","")+"player.html?"+p.toString();
-
-document.getElementById("out").innerText=final;
-document.getElementById("res").style.display="block";
-}
-
-function copy(){
-navigator.clipboard.writeText(document.getElementById("out").innerText);
+function copy() {
+  navigator.clipboard.writeText(document.getElementById("output").innerText);
+  alert("Lien copié !");
 }
 </script>
 
