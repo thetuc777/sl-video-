@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,6 +17,7 @@
     --dim: #4a4a4a;
     --accent: #d6cfba;
     --white: #f4f1ea;
+    --red: #c0504a;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -46,8 +47,9 @@
     padding: 2rem;
   }
 
-  .wrap { width: 100%; max-width: 600px; position: relative; z-index: 1; }
+  .wrap { width: 100%; max-width: 620px; position: relative; z-index: 1; }
 
+  /* HEADER */
   .header { text-align: center; margin-bottom: 3rem; }
   .eyebrow { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 7px; color: var(--dim); text-transform: uppercase; margin-bottom: 1.4rem; }
   .title-row { display: flex; align-items: baseline; justify-content: center; gap: 18px; margin-bottom: 0.8rem; flex-wrap: wrap; }
@@ -60,6 +62,7 @@
 
   .hr { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border-hi) 30%, var(--border-hi) 70%, transparent); margin: 2.5rem 0; }
 
+  /* SECTION */
   .section { margin-bottom: 2.2rem; }
   .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 1.4rem; }
   .s-rune { font-family: 'Cinzel', serif; font-size: 20px; color: var(--accent); width: 28px; text-align: center; flex-shrink: 0; }
@@ -67,6 +70,25 @@
   .s-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-hi), transparent); }
 
   .field-label { font-style: italic; font-size: 16px; color: #c0bdb4; display: block; margin-bottom: 10px; }
+
+  /* NAME INPUT */
+  .name-input-wrap { margin-bottom: 12px; }
+  .name-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    padding: 10px 16px;
+    color: var(--accent);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .name-input::placeholder { color: var(--dim); text-transform: uppercase; letter-spacing: 2px; }
+  .name-input:focus { border-color: var(--accent); }
 
   .input-row { display: flex; gap: 8px; }
   input[type="text"] {
@@ -87,71 +109,26 @@
     background: transparent;
     border: 1px solid var(--border-hi);
     color: var(--accent);
-    padding: 0 18px;
+    padding: 0 16px;
     font-family: 'Cinzel', serif;
     font-size: 9px;
     letter-spacing: 3px;
     text-transform: uppercase;
     cursor: pointer;
     white-space: nowrap;
-    transition: border-color 0.2s, background 0.2s, color 0.2s;
+    transition: border-color 0.2s, background 0.2s;
     flex-shrink: 0;
   }
   .preview-btn:hover { border-color: var(--accent); background: rgba(214,207,186,0.08); }
 
-  /* PREVIEW PLAYER */
-  .preview-wrap {
-    display: none;
-    margin-top: 1.2rem;
-    position: relative;
-    border: 1px solid var(--border-hi);
-    background: #000;
-  }
-  .preview-wrap::before {
-    content: '';
-    position: absolute; top: -1px; left: -1px;
-    width: 14px; height: 14px;
-    border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
-    z-index: 2;
-  }
-  .preview-wrap::after {
-    content: '';
-    position: absolute; bottom: -1px; right: -1px;
-    width: 14px; height: 14px;
-    border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent);
-    z-index: 2;
-  }
-  .preview-label {
-    position: absolute;
-    top: 8px; right: 12px;
-    font-family: 'Cinzel', serif;
-    font-size: 8px;
-    letter-spacing: 3px;
-    color: var(--accent);
-    text-transform: uppercase;
-    z-index: 3;
-    background: rgba(0,0,0,0.6);
-    padding: 3px 8px;
-  }
-  .preview-ratio {
-    width: 100%;
-    padding-top: 56.25%; /* 16:9 */
-    position: relative;
-  }
-  .preview-ratio video {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: contain;
-  }
-  .preview-error {
-    display: none;
-    padding: 2rem;
-    text-align: center;
-    font-style: italic;
-    color: var(--muted);
-    font-size: 14px;
-  }
+  /* PREVIEW */
+  .preview-wrap { display: none; margin-top: 1.2rem; position: relative; border: 1px solid var(--border-hi); background: #000; }
+  .preview-wrap::before { content: ''; position: absolute; top: -1px; left: -1px; width: 14px; height: 14px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); z-index: 2; }
+  .preview-wrap::after { content: ''; position: absolute; bottom: -1px; right: -1px; width: 14px; height: 14px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); z-index: 2; }
+  .preview-label { position: absolute; top: 8px; right: 12px; font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; z-index: 3; background: rgba(0,0,0,0.6); padding: 3px 8px; }
+  .preview-ratio { width: 100%; padding-top: 56.25%; position: relative; }
+  .preview-ratio video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; }
+  .preview-error { display: none; padding: 2rem; text-align: center; font-style: italic; color: var(--muted); font-size: 14px; }
 
   /* OPTIONS */
   .opts { display: flex; flex-direction: column; gap: 5px; }
@@ -189,6 +166,126 @@
   .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
   .hint { margin-top: 1.2rem; font-style: italic; font-size: 14px; color: var(--muted); line-height: 2; white-space: pre-line; }
 
+  /* ── HISTORY ── */
+  .history-section { margin-top: 1rem; }
+
+  .history-empty {
+    text-align: center;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--dim);
+    padding: 2rem 0;
+    border: 1px dashed var(--border);
+  }
+
+  .history-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .history-item {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border-color 0.2s;
+  }
+  .history-item:hover { border-color: var(--border-hi); }
+
+  .history-top {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .history-rune {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .history-name {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--white);
+    text-transform: uppercase;
+    flex: 1;
+  }
+
+  .history-date {
+    font-style: italic;
+    font-size: 12px;
+    color: var(--dim);
+    flex-shrink: 0;
+  }
+
+  .history-url {
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    word-break: break-all;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .history-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tag {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    padding: 3px 8px;
+    border: 1px solid var(--border-hi);
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .history-actions {
+    display: flex;
+    gap: 0;
+  }
+
+  .h-btn {
+    flex: 1;
+    padding: 10px 8px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+  }
+  .h-btn:last-child { border-right: none; }
+  .h-btn:hover { color: var(--white); background: rgba(255,255,255,0.03); }
+  .h-btn.del:hover { color: var(--red); }
+  .h-btn.copy-h:hover { color: var(--accent); }
+  .h-btn.reload:hover { color: #88c888; }
+
+  .clear-all-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--dim);
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .clear-all-btn:hover { border-color: var(--red); color: var(--red); }
+
   .footer-runes { text-align: center; font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 8px; color: var(--dim); margin-top: 4rem; }
 </style>
 </head>
@@ -202,7 +299,7 @@
       <span class="by-line">by <a href="https://fr.wikipedia.org/wiki/%C3%98" target="_blank">Øzak</a></span>
     </div>
     <p class="rune-line">ᚠ ᛁ ᛞ ᛖ ᛟ ᛗ ᚨ ᚾ ᚨ ᚷ ᛖ ᚱ</p>
-    <p class="tagline">Forge ton lien vidéo pour Second Life</p>
+    <p class="tagline">Forge your video link for Second Life</p>
   </div>
 
   <div class="hr"></div>
@@ -211,23 +308,27 @@
   <div class="section">
     <div class="section-head">
       <span class="s-rune">ᚢ</span>
-      <span class="s-title">I — Source Dropbox</span>
+      <span class="s-title">I — Dropbox Source</span>
       <div class="s-line"></div>
     </div>
-    <span class="field-label">Lien de partage Dropbox</span>
-    <div class="input-row">
-      <input type="text" id="dropboxUrl" placeholder="https://www.dropbox.com/scl/fi/…" oninput="resetPreview()" />
-      <button class="preview-btn" onclick="loadPreview()">ᛈ Prévisualiser</button>
+
+    <div class="name-input-wrap">
+      <input type="text" class="name-input" id="videoName" placeholder="Video name (ex: Lounge Ambiance)" />
     </div>
 
-    <!-- PREVIEW -->
+    <span class="field-label">Dropbox sharing link</span>
+    <div class="input-row">
+      <input type="text" id="dropboxUrl" placeholder="https://www.dropbox.com/scl/fi/…" oninput="resetPreview()" />
+      <button class="preview-btn" onclick="loadPreview()">ᛈ Preview</button>
+    </div>
+
     <div class="preview-wrap" id="previewWrap">
-      <span class="preview-label">Prévisualisation</span>
+      <span class="preview-label">Preview</span>
       <div class="preview-ratio">
         <video id="previewVideo" playsinline></video>
       </div>
       <div class="preview-error" id="previewError">
-        Impossible de charger la vidéo. Vérifie que le lien Dropbox est bien partagé en "Tout le monde avec le lien".
+        Unable to load video. Make sure your Dropbox link is shared as "Anyone with the link".
       </div>
     </div>
   </div>
@@ -236,7 +337,7 @@
   <div class="section">
     <div class="section-head">
       <span class="s-rune">ᚦ</span>
-      <span class="s-title">II — Paramètres de lecture</span>
+      <span class="s-title">II — Playback Settings</span>
       <div class="s-line"></div>
     </div>
     <div class="opts">
@@ -246,7 +347,7 @@
         <div class="opt-rune">ᛇ</div>
         <div class="opt-body">
           <div class="opt-name">Responsive</div>
-          <div class="opt-desc">Adaptatif — s'adapte à la taille de l'écran</div>
+          <div class="opt-desc">Adaptive — adjusts to screen size</div>
         </div>
         <div class="opt-toggle"><div class="toggle-pill"></div></div>
       </div>
@@ -256,7 +357,7 @@
         <div class="opt-rune">ᚨ</div>
         <div class="opt-body">
           <div class="opt-name">Autoplay</div>
-          <div class="opt-desc">Lecture automatique dès l'ouverture</div>
+          <div class="opt-desc">Automatic playback on open</div>
         </div>
         <div class="opt-toggle"><div class="toggle-pill"></div></div>
       </div>
@@ -266,7 +367,7 @@
         <div class="opt-rune">ᛗ</div>
         <div class="opt-body">
           <div class="opt-name">Hide Audio Section</div>
-          <div class="opt-desc">Masquer la section audio du lecteur</div>
+          <div class="opt-desc">Hide the audio section of the player</div>
         </div>
         <div class="opt-toggle"><div class="toggle-pill"></div></div>
       </div>
@@ -276,7 +377,7 @@
         <div class="opt-rune">ᛟ</div>
         <div class="opt-body">
           <div class="opt-name">Loop</div>
-          <div class="opt-desc">Lecture en boucle continue</div>
+          <div class="opt-desc">Continuous loop playback</div>
         </div>
         <div class="opt-toggle"><div class="toggle-pill"></div></div>
       </div>
@@ -286,7 +387,7 @@
         <div class="opt-rune">ᛉ</div>
         <div class="opt-body">
           <div class="opt-name">Muted</div>
-          <div class="opt-desc">Muet — lecture sans son</div>
+          <div class="opt-desc">Muted — silent playback</div>
         </div>
         <div class="opt-toggle"><div class="toggle-pill"></div></div>
       </div>
@@ -296,7 +397,7 @@
         <div class="opt-rune">ᚲ</div>
         <div class="opt-body">
           <div class="opt-name">Hide Controls</div>
-          <div class="opt-desc">Masquer la barre de lecture et les boutons</div>
+          <div class="opt-desc">Hide the playback bar and buttons</div>
         </div>
         <div class="opt-toggle"><div class="toggle-pill"></div></div>
       </div>
@@ -306,109 +407,246 @@
 
   <div class="hr"></div>
 
-  <button class="btn" onclick="generate()"><span>ᚷ &nbsp; Forger le lien &nbsp; ᚷ</span></button>
+  <button class="btn" onclick="generate()"><span>ᚷ &nbsp; Forge the link &nbsp; ᚷ</span></button>
   <div class="btn-deco"><span>ᚠ ᚢ ᚦ</span><span>ᚦ ᚢ ᚠ</span></div>
 
+  <!-- RESULT -->
   <div class="result" id="result">
     <div class="result-box">
-      <p class="result-label">Lien pour Second Life</p>
+      <p class="result-label">Your Second Life Link</p>
       <div class="url-display" id="urlDisplay"></div>
-      <button class="copy-btn" onclick="copyUrl()">Copier l'URL</button>
-      <p class="hint" id="hint"></p>
+      <button class="copy-btn" onclick="copyUrl()">Copy URL</button>
+      <p class="hint">→ Paste this URL in Media › Video URI in Second Life</p>
     </div>
+  </div>
+
+  <div class="hr"></div>
+
+  <!-- HISTORY -->
+  <div class="section history-section">
+    <div class="section-head">
+      <span class="s-rune">ᛃ</span>
+      <span class="s-title">III — Video History</span>
+      <div class="s-line"></div>
+    </div>
+    <div id="historyList"></div>
   </div>
 
   <p class="footer-runes">ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ</p>
 </div>
 
 <script>
+// ── STORAGE ──
+const STORAGE_KEY = 'sl_video_history';
+
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function saveHistory(h) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(h));
+}
+
+// ── OPTIONS ──
 function toggle(el, id) {
   el.classList.toggle('active');
   document.getElementById(id).checked = !document.getElementById(id).checked;
 }
 
+function getOptions() {
+  return {
+    responsive:   document.getElementById('responsive').checked,
+    autoplay:     document.getElementById('autoplay').checked,
+    hideaudio:    document.getElementById('hideaudio').checked,
+    loop:         document.getElementById('loop').checked,
+    mute:         document.getElementById('mute').checked,
+    hidecontrols: document.getElementById('hidecontrols').checked,
+  };
+}
+
+function setOptions(opts) {
+  ['responsive','autoplay','hideaudio','loop','mute','hidecontrols'].forEach(id => {
+    const cb = document.getElementById(id);
+    const el = cb.closest('.opt');
+    cb.checked = !!opts[id];
+    if (cb.checked) el.classList.add('active');
+    else el.classList.remove('active');
+  });
+}
+
+function buildUrl(dropboxUrl, opts) {
+  const params = new URLSearchParams();
+  params.set('url', dropboxUrl);
+  if (opts.responsive)   params.set('responsive', '1');
+  if (opts.autoplay)     params.set('autoplay', '1');
+  if (opts.hideaudio)    params.set('hideaudio', '1');
+  if (opts.loop)         params.set('loop', '1');
+  if (opts.mute)         params.set('mute', '1');
+  if (opts.hidecontrols) params.set('hidecontrols', '1');
+  const base = window.location.href.replace('index.html','').replace(/\/+$/,'');
+  return base + '/player.html?' + params.toString();
+}
+
+function tagLabels(opts) {
+  const map = {
+    responsive: 'Responsive', autoplay: 'Autoplay',
+    hideaudio: 'Hide Audio', loop: 'Loop',
+    mute: 'Muted', hidecontrols: 'Hide Controls'
+  };
+  return Object.keys(opts).filter(k => opts[k]).map(k => map[k]);
+}
+
+// ── PREVIEW ──
 function toDirectUrl(url) {
-  let direct = url
-    .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
-    .replace('?dl=0', '').replace('&dl=0', '');
-  if (!direct.includes('dl=1') && !direct.includes('raw=1')) {
-    direct += (direct.includes('?') ? '&' : '?') + 'raw=1';
-  }
-  return direct;
+  let d = url.replace('www.dropbox.com','dl.dropboxusercontent.com')
+             .replace('?dl=0','').replace('&dl=0','');
+  if (!d.includes('dl=1') && !d.includes('raw=1'))
+    d += (d.includes('?') ? '&' : '?') + 'raw=1';
+  return d;
 }
 
 function loadPreview() {
   const url = document.getElementById('dropboxUrl').value.trim();
-  if (!url.includes('dropbox.com')) {
-    alert('Colle d\'abord un lien Dropbox valide.');
-    return;
-  }
-  const directUrl = toDirectUrl(url);
-  const wrap  = document.getElementById('previewWrap');
+  if (!url.includes('dropbox.com')) { alert('Please paste a valid Dropbox link first.'); return; }
+  const wrap = document.getElementById('previewWrap');
   const video = document.getElementById('previewVideo');
-  const err   = document.getElementById('previewError');
-
+  const err = document.getElementById('previewError');
   wrap.style.display = 'block';
   err.style.display = 'none';
   video.style.display = 'block';
-
-  // Appliquer options en temps réel
-  video.src     = directUrl;
-  video.loop    = document.getElementById('loop').checked;
-  video.muted   = document.getElementById('mute').checked;
+  video.src = toDirectUrl(url);
+  video.loop = document.getElementById('loop').checked;
+  video.muted = document.getElementById('mute').checked;
   video.controls = !document.getElementById('hidecontrols').checked;
   video.autoplay = document.getElementById('autoplay').checked;
-
-  video.onerror = () => {
-    video.style.display = 'none';
-    err.style.display = 'block';
-  };
-
+  video.onerror = () => { video.style.display = 'none'; err.style.display = 'block'; };
   video.load();
   if (document.getElementById('autoplay').checked) video.play().catch(()=>{});
   wrap.scrollIntoView({ behavior: 'smooth' });
 }
 
 function resetPreview() {
-  const wrap = document.getElementById('previewWrap');
-  wrap.style.display = 'none';
-  const video = document.getElementById('previewVideo');
-  video.pause();
-  video.src = '';
+  document.getElementById('previewWrap').style.display = 'none';
+  const v = document.getElementById('previewVideo');
+  v.pause(); v.src = '';
 }
 
+// ── GENERATE ──
 function generate() {
   const url = document.getElementById('dropboxUrl').value.trim();
-  if (!url.includes('dropbox.com')) {
-    alert('Lien Dropbox invalide. Colle le lien de partage complet.');
-    return;
-  }
-  const params = new URLSearchParams();
-  params.set('url', url);
-  if (document.getElementById('responsive').checked)   params.set('responsive', '1');
-  if (document.getElementById('autoplay').checked)     params.set('autoplay', '1');
-  if (document.getElementById('hideaudio').checked)    params.set('hideaudio', '1');
-  if (document.getElementById('loop').checked)         params.set('loop', '1');
-  if (document.getElementById('mute').checked)         params.set('mute', '1');
-  if (document.getElementById('hidecontrols').checked) params.set('hidecontrols', '1');
+  if (!url.includes('dropbox.com')) { alert('Invalid Dropbox link. Please paste the full sharing link.'); return; }
 
-  const base = window.location.href.replace('index.html','').replace(/\/+$/,'');
-  const finalUrl = base + '/player.html?' + params.toString();
+  const name = document.getElementById('videoName').value.trim() || ('Video ' + (loadHistory().length + 1));
+  const opts = getOptions();
+  const finalUrl = buildUrl(url, opts);
 
+  // Show result
   document.getElementById('urlDisplay').textContent = finalUrl;
-  document.getElementById('hint').textContent =
-    '→ Colle cette URL dans Media › Video URI dans Second Life\n→ Nouvelle vidéo = nouveau lien Dropbox, regénère';
   document.getElementById('result').style.display = 'block';
   document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+
+  // Save to history
+  const history = loadHistory();
+  const entry = {
+    id: Date.now(),
+    name: name,
+    dropboxUrl: url,
+    finalUrl: finalUrl,
+    opts: opts,
+    date: new Date().toLocaleDateString('en-GB')
+  };
+  history.unshift(entry);
+  saveHistory(history);
+  renderHistory();
 }
 
 function copyUrl() {
   navigator.clipboard.writeText(document.getElementById('urlDisplay').textContent).then(() => {
     const btn = document.querySelector('.copy-btn');
-    btn.textContent = 'Copié ✦';
-    setTimeout(() => btn.textContent = "Copier l'URL", 2000);
+    btn.textContent = 'Copied ✦';
+    setTimeout(() => btn.textContent = 'Copy URL', 2000);
   });
 }
+
+// ── HISTORY ──
+function renderHistory() {
+  const history = loadHistory();
+  const container = document.getElementById('historyList');
+
+  if (history.length === 0) {
+    container.innerHTML = '<div class="history-empty">No videos yet — forge your first link above ✦</div>';
+    return;
+  }
+
+  const runes = ['ᚠ','ᚢ','ᚦ','ᚨ','ᚱ','ᚲ','ᚷ','ᚹ','ᚾ','ᛁ'];
+
+  let html = '<div class="history-list">';
+  history.forEach((item, i) => {
+    const tags = tagLabels(item.opts).map(t => `<span class="tag">${t}</span>`).join('');
+    const rune = runes[i % runes.length];
+    html += `
+    <div class="history-item" id="item-${item.id}">
+      <div class="history-top">
+        <span class="history-rune">${rune}</span>
+        <span class="history-name">${item.name}</span>
+        <span class="history-date">${item.date}</span>
+      </div>
+      <div class="history-url">${item.finalUrl}</div>
+      <div class="history-tags">${tags || '<span class="tag" style="color:var(--dim)">No options</span>'}</div>
+      <div class="history-actions">
+        <button class="h-btn copy-h" onclick="copyHistoryUrl('${item.id}')">ᚲ Copy URL</button>
+        <button class="h-btn reload" onclick="reloadItem(${item.id})">ᚱ Reload & Edit</button>
+        <button class="h-btn del" onclick="deleteItem(${item.id})">ᛏ Delete</button>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+
+  if (history.length > 1) {
+    html += '<button class="clear-all-btn" onclick="clearAll()">ᛏ Clear all history</button>';
+  }
+
+  container.innerHTML = html;
+}
+
+function copyHistoryUrl(id) {
+  const history = loadHistory();
+  const item = history.find(h => h.id == id);
+  if (!item) return;
+  navigator.clipboard.writeText(item.finalUrl).then(() => {
+    const btn = document.querySelector(`#item-${id} .copy-h`);
+    if (btn) { btn.textContent = '✦ Copied!'; setTimeout(() => btn.textContent = 'ᚲ Copy URL', 2000); }
+  });
+}
+
+function reloadItem(id) {
+  const history = loadHistory();
+  const item = history.find(h => h.id == id);
+  if (!item) return;
+  document.getElementById('videoName').value = item.name;
+  document.getElementById('dropboxUrl').value = item.dropboxUrl;
+  setOptions(item.opts);
+  resetPreview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteItem(id) {
+  let history = loadHistory();
+  history = history.filter(h => h.id != id);
+  saveHistory(history);
+  renderHistory();
+}
+
+function clearAll() {
+  if (confirm('Delete all history?')) {
+    saveHistory([]);
+    renderHistory();
+  }
+}
+
+// Init
+renderHistory();
 </script>
 </body>
 </html>
