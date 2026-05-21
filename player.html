@@ -2,70 +2,48 @@
 <html>
 <head>
 <meta charset="utf-8">
-
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-
-html, body {
-  width:100%;
-  height:100%;
-  background:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-video {
-  max-width:100%;
-  max-height:100%;
-  width:auto;
-  height:auto;
-  object-fit:contain;
-}
-
-.fill video {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+  video { width: 100%; height: 100%; object-fit: contain; display: block; }
 </style>
-
 </head>
 <body>
-
 <script>
-const p = new URLSearchParams(window.location.search);
+  const p = new URLSearchParams(window.location.search);
+  const url = p.get('url');
+  const autoplay     = p.get('autoplay') === '1';
+  const loop         = p.get('loop') === '1';
+  const mute         = p.get('mute') === '1';
+  const hidecontrols = p.get('hidecontrols') === '1';
+  const responsive   = p.get('responsive') === '1';
+  const hideaudio    = p.get('hideaudio') === '1';
 
-const url = p.get('url');
-const autoplay = p.get('autoplay') === '1';
-const loop = p.get('loop') === '1';
-const mute = p.get('mute') === '1';
-const controls = p.get('controls') === '1';
-const responsive = p.get('responsive') !== '0';
+  if (url) {
+    let directUrl = url
+      .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
+      .replace('?dl=0', '')
+      .replace('&dl=0', '');
+    if (!directUrl.includes('dl=1') && !directUrl.includes('raw=1')) {
+      directUrl += (directUrl.includes('?') ? '&' : '?') + 'raw=1';
+    }
 
-if (!responsive) document.body.classList.add("fill");
+    const video = document.createElement('video');
+    video.src = directUrl;
+    if (autoplay) video.autoplay = true;
+    if (loop)     video.loop = true;
+    if (mute)     video.muted = true;
+    if (!hidecontrols) video.controls = true;
+    video.playsInline = true;
 
-if (url) {
+    if (responsive) {
+      video.style.width  = '100%';
+      video.style.height = 'auto';
+      video.style.objectFit = 'contain';
+    }
 
-  let directUrl = url
-    .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
-    .replace('?dl=0','')
-    .replace('&dl=0','')
-    .replace('?dl=1','')
-    .replace('&dl=1','');
-
-  const video = document.createElement('video');
-
-  video.src = directUrl;
-  video.autoplay = autoplay;
-  video.loop = loop;
-  video.muted = mute;
-  video.controls = controls;
-  video.playsInline = true;
-
-  document.body.appendChild(video);
-}
+    document.body.appendChild(video);
+  }
 </script>
-
 </body>
 </html>
